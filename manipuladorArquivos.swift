@@ -98,5 +98,4 @@ func substituirPalavra() {
     }
 }
 
-// Inicia o programa
 main()
