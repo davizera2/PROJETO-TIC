@@ -1,122 +1,88 @@
-class Banco {
-  var nome: String = ""
-  var cpf: String = ""
-  var email: String = ""
-  var saldo: Float
+class ContaBancaria {
+  var titular: String = ""
+  var saldo: Double
 
-  init(nome: String, cpf: String, email: String, saldo: Float) {
-      self.nome = nome
-      self.cpf = cpf
-      self.email = email
+  init(titular: String, saldo: Double) {
+      self.titular = titular
       self.saldo = saldo
   }
 
-  func exibirDados() {
-      print(" --- Dados do cliente --- \n")
-      print("Nome: \(self.nome)")
-      print("CPF: \(self.cpf)")
-      print("Email: \(self.email)")
-      print("Saldo: \(self.saldo)")
-      print("-- --- --- --- --- --- --")
-  }
-
   func sacar() {
-      print("--- SAQUE ---")
-      print("Saldo: R$ \(saldo)")
+      print(" ----- SAQUE ----- ")
       print("Valor do saque: ", terminator: "")
-      let valor = Float(readLine() ?? "") ?? 0.0
-      if (valor <= self.saldo) {
-          self.saldo -= valor
+      let valor = Double(readLine() ?? "") ?? 0.00
+      print(" ----- ----- ----- \n")
+      if(valor <= saldo) {
+          saldo -= valor
+          print("Saque de R$ \(valor) realizado com sucesso.\n")
+          
       } else {
           print("Saldo insuficiente ... \n")
       }
   }
 
-  func depositar() {
-      print("--- DEPÓSITO ---")
+  func extrato() {
+      print("\n--- Extrato ---")
+      print("Titular: \(titular)")
       print("Saldo: R$ \(saldo)")
-      print("Valor do depósito: ")
-      let valor = Float(readLine() ?? "") ?? 0.0
-      self.saldo += valor
-      print("\n")
-  }
-
-  func verSaldo() {
-      print("Saldo: R$ \(saldo)\n")
+      print("--- --- --- ---\n")
   }
 }
 
-func exibirMenu() -> Int {
-  print("\n")
+func menu() -> Int {
+  print("--- Bem vindo ao Banco Eduvi Doutores LTDA ---")
   print("""
-  Bem-vindo ao Banco Terminal!
-  Escolha uma opção:
-  1. Criar Conta
-  2. Ver Saldo
-  3. Sacar
-  4. Depositar
-  5. Sair
+  \nEscolha uma opção:
+  1. Criar Conta.
+  2. Sacar.
+  3. Ver saldo.
+  4. Sair\n
   """)
 
   print("O que deseja? ", terminator: "")
-  return Int(readLine() ?? "") ?? 0 
+  return Int(readLine() ?? "") ?? 0
 }
 
-func iniciarBanco() {
-  var cliente: Banco? = nil
+func IniciarBanco() {
+  var cliente: ContaBancaria? = nil
 
   while true {
-      let opcao = exibirMenu()
+      let opcao = menu()
 
       switch opcao {
-          case 1: 
-            cliente = criarConta()
-            print("Conta criada com sucesso!")
-            break
-
-          case 2:
-            if let cliente = cliente {
-                cliente.verSaldo()
-            } else {
-                print("Conta não encontrada! Por favor, crie uma conta.")
-            }
-            break
-          
-          case 3: 
-            if let cliente = cliente {
-                cliente.sacar()
-            }
-            break
-          
-          case 4:
-            if let cliente = cliente {
-                cliente.depositar()
-            } else {
-                print("Conta não encontrada! Por favor, crie uma conta.")
-            }
-            break
-          case 5:
-            print("Encerrando programa ... ")
-            return
-          default:
-            print("Opção inválida! Tente novamente.")
-      } 
+            case 1:
+                cliente = CriarConta()
+                print("Conta criada com sucesso!\n")
+            case 2:
+                if let cliente = cliente {
+                    cliente.sacar()
+                } else {
+                    print("Conta não encontrada! Por favor, crie uma conta.\n")
+                }
+            case 3:
+                if let cliente = cliente {
+                    cliente.extrato()
+                } else {
+                    print("Conta não encontrada! Por favor, crie uma conta.\n")
+                }
+            case 4:
+                print("Obrigado por nos visitar!\nASS: Banco Eduvi Doutores LTDA ...")
+                return
+            default:
+                print("Opção inválida! Tente novamente.")
+            
+      }
   }
-}
-func criarConta() -> Banco{
-  print("Digite seu nome: ", terminator:"")
-  let nome = readLine() ?? ""
 
-  print("CPF: ", terminator:"")
-  let cpf = readLine() ?? ""
-
-  print("Email: ", terminator:"")
-  let email = readLine() ?? ""
-
-  let saldo: Float = 1000.00
-  print("Saldo inicial: R$ \(saldo)")
-
-  return Banco(nome: nome, cpf: cpf, email: email, saldo: saldo)
 }
 
-iniciarBanco()
+func CriarConta() -> ContaBancaria{
+    print("Digite seu nome: ", terminator:"")
+    let titular = readLine() ?? ""
+    let saldo = 1000.00
+    print("Saldo inicial de R$ 1000.00")
+
+    return ContaBancaria(titular: titular, saldo: saldo)
+}
+
+IniciarBanco()
